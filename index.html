@@ -10,6 +10,24 @@
     <script id="entry-template" type="text/x-handlebars-template">
         <div> [{{amount}}] {{name}} - ${{price}} <span class="remove">X</span></div>
     </script>
+    <script id="product-template" type="text/x-handlebars-template">
+    <div class="col-md-4">
+                <div class="card-container">
+                    <div class="card item" data-name="{{name}}" data-price="{{price}}">
+                        <div class="pricebox">
+                            <p class="price"> ${{price}} </p>
+                        </div>
+                        <div class="buybox">
+                            <p class="add-to-cart">{{name}} -  ADD TO CART </p>
+                        </div>
+                        <div class="card-inner">
+                            <img src="{{img}}" class="proimage">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </script>
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="node_modules/handlebars/dist/handlebars.min.js"></script>
@@ -58,7 +76,8 @@
         </div>
 
 
-        <div class="row">
+        <div class="row products">
+<!--
             <div class="col-md-4">
                 <div class="card-container">
                     <div class="card item" data-name="glass" data-price="68">
@@ -106,9 +125,11 @@
                     </div>
                 </div>
             </div>
+-->
 
 
         </div>
+<!--
         <div class="row">
             <div class="col-md-4">
                 <div class="card-container">
@@ -158,6 +179,7 @@
                 </div>
             </div>
         </div>
+-->
     </div>
 
     <script type="text/javascript" src="script.js"></script>
