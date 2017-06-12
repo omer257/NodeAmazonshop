@@ -4,21 +4,23 @@ const app = express()
 
 
 var client = amazon.createClient({
-    awsId: "AKIAJ6EFCIATZ37HS7IA",
-    awsSecret: "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",
-    awsTag: "aws Tag"
+    awsId: "AKIAIBZMUK6U4L56ZUYQ",
+    awsSecret: "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",
+    awsTag: "123123001-20"
 });
 
 app.use(express.static('./'));
 
-app.get('/', function (req, res) {
+app.get('/amaz', function (req, res) {
     client.itemSearch({
-        director: 'Quentin Tarantino',
-    }).then(function (results) {
-        res.send(results)
-    }).catch(function (err) {
-        res.send(err)
-    });
+  director: 'Quentin Tarantino',
+  searchIndex: 'DVD',
+  responseGroup: 'ItemAttributes,Offers,Images'
+}).then(function(results){
+  res.send(results)
+}).catch(function(err){
+  res.send(err)
+});
 })
 
 var fakeJson = [

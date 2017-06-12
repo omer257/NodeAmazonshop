@@ -3,10 +3,19 @@ var $ = $;
 var cart = [];
 var source = $("#entry-template").html();
 var template = Handlebars.compile(source);
-
-
 var sourcePrd = $("#product-template").html();
 var templatePrd = Handlebars.compile(sourcePrd);
+
+var init = function () {
+    if (typeof (Storage) !== "undefined") {
+        cart = JSON.parse(localStorage.cart);
+    } else {
+        // Sorry! No Web Storage support..
+    }
+    updateCart();
+    buildProducts();
+}
+
 var updateCart = function () {
     $('.cart-list').empty();
     let total = 0;
@@ -19,6 +28,7 @@ var updateCart = function () {
         total = total + parseInt(cart[val].price) * parseInt(cart[val].amount);
     });
     $('.total').html(total);
+    store_loc_storage(cart);
 }
 var addItem = function (item) {
     var foundIndex = cart.findIndex((itemX) => {
@@ -33,27 +43,38 @@ var addItem = function (item) {
 var clearCart = function () {
     cart = [];
     updateCart();
-    // TODO: Write a function that clears the cart ;-)
+    localStorage.clear();
 }
+
 var buildProducts = function () {
-    var jqxhr = $.getJSON("/json", function (data) {
+    var jqxhr = $.getJSON("/amaz", function (data) {
             data.forEach((item) => {
+                var price = item.ItemAttributes[0].ListPrice !== undefined?item.ItemAttributes[0].ListPrice[0].Amount[0]:'N/A';
+                var title = item.ItemAttributes[0].Title;
+                var image  = item.LargeImage[0].URL[0]
                 $('.products').append(templatePrd({
-                    img: item.img,
-                    name: item.name,
-                    price: item.price
+                    img: image,
+                    name: title,
+                    price: price/100
                 }));
             })
-
         })
         .fail(function () {
             console.log("error");
         })
 }
+
 $('.view-cart').on('click', function () {
     $('.shopping-cart').toggle();
 });
 
+var store_loc_storage = function (str) {
+    if (typeof (Storage) !== "undefined") {
+        localStorage.cart = JSON.stringify(str);
+    } else {
+        // Sorry! No Web Storage support..
+    }
+}
 
 $('body').on('click', '.remove', function () {
     cart.splice($(this).index(), 1);
@@ -73,7 +94,8 @@ $('body').on('click', '.add-to-cart', function () {
 });
 $('.clear-cart').on('click', function () {
     clearCart();
+    updateCart();
 });
+
 // update the cart as soon as the page loads!
-updateCart();
-buildProducts();
+init();
